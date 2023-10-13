@@ -1,0 +1,29 @@
+﻿<div class="nav-menus-wrapper">
+    <ul class="nav-menu align-to-right">
+        <li>
+            <a href="/">Home</a>
+           
+        </li>
+        <li>
+            <a href="@Url.Action("About", "Home", new { area = "" })">About</a>
+          
+        </li>
+      
+        <li>
+            <a href="#">Our Services</a>
+            <ul class="nav-dropdown">
+
+                <li><a href="@Url.Action("Construction", "Home", new { area = "" })">Construction Works</a></li>
+                <li><a href="@Url.Action("Electrification", "Home", new { area = "" })">Electrification / Solar Power</a></li>
+                <li><a href="@Url.Action("Borehole", "Home", new { area = "" })">Borehole</a></li>
+                <li><a href="@Url.Action("Procurement", "Home", new { area = "" })">Procurement</a></li>
+                <li><a href="@Url.Action("Supply", "Home", new { area = "" })">Supply/Installation</a></li>
+                <li><a href="@Url.Action("Contracts", "Home", new { area = "" })">General Contracts</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="@Url.Action("Contact", "Home", new { area = "" })">Contact Us</a>
+           
+        </li>
+    </ul>
+</div>

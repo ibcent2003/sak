@@ -1,0 +1,73 @@
+﻿@{
+        ViewBag.Title = "Home Page";
+        Layout = "~/Views/Shared/_NewLayout.cshtml";
+    }
+
+
+<div class="main">
+    <div class="section">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="about-frontpage">
+                    <h3>SAK INTEGRATED CONCEPT LIMITED</h3>
+                    <hr class="left-short">
+                    <p>SAK INTEGRATED CONCEPT LIMITED is a firm of Nigeria consortium of engineers established to provide a professional practice embracing the full range of activities in building and civil engineering works. <a href="@Url.Action("About", "Home", new { area = "" })">read more</a></p>
+                    <div class="quick-services">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="inner-quick-services">
+                                    <div class="construction-icon"><img src="~/Content/NewFront/img/master/construction/icon-1.png" alt=""></div>
+                                    <h5>Civil Engineering</h5>
+                                    <p>One of the company’s primary market focus is the infrastructure and facilities....<a href="@Url.Action("Construction", "Home", new { area = "" })">read more</a></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inner-quick-services">
+                                    <div class="construction-icon"><img src="~/Content/NewFront/img/master/construction/engineer.png" alt=""></div>
+                                    <h5>Constructions</h5>
+                                    <p>We're fully equipped technically and resourcefully to undertake rural and urban...<a href="@Url.Action("Construction", "Home", new { area = "" })">read more</a>.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inner-quick-services">
+                                    <div class="construction-icon"><img src="~/Content/NewFront/img/master/construction/drawing.png" alt=""></div>
+                                    <h5>General Contracts</h5>
+                                    <p>We're engaged in supplying of require items such as computers, office furnitures....<a href="@Url.Action("Contracts", "Home", new { area = "" })">read more</a></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inner-quick-services">
+                                    <div class="construction-icon"><img src="~/Content/NewFront/img/master/construction/settings.png" alt=""></div>
+                                    <h5>Electrification / Solar Power</h5>
+                                    <p>We Provide wholesale prices on top brands. Best package prices on solar power system...<a href="@Url.Action("Electrification", "Home", new { area = "" })">read more</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="front-picture"><img src="~/Content/NewFront/img/images/construction/look.jpg" alt=""></div>
+            </div>
+        </div>
+        <div class="front-stripe">
+            <div class="row">
+                <div class="col-md-4 inner-stripe-1">
+                    <div class="stripe-icon"><img src="~/Content/NewFront/img/master/construction/medal.png" alt=""></div>
+                    <h6>Marketer & Suppliers</h6>
+                    <p>We providing integrated, reliable, and cost-efficient supply chain management service</p>
+                </div>
+                <div class="col-md-4 inner-stripe-2">
+                    <div class="stripe-icon"><img src="~/Content/NewFront/img/master/construction/crane.png" alt=""></div>
+                    <h6>Borehole</h6>
+                    <p>We're also into borehole drilling and supply of all kind of borehole equipments.</p>
+                </div>
+                <div class="col-md-4 inner-stripe-3">
+                    <div class="stripe-icon"><img src="~/Content/NewFront/img/master/construction/diploma.png" alt=""></div>
+                    <h6>Building Material</h6>
+                    <p>We are also engaged in supplying all kind of building material to small and large firms</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

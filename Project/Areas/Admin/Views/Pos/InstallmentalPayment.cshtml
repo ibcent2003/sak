@@ -1,0 +1,311 @@
+﻿@model Project.Areas.Admin.Models.PosViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Installmental Payment";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+    var db = new Project.DAL.PROEntities();
+}
+@section Crumbs{
+    <div class="crumbs">
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Installmental Payment</li>
+        </ul>
+    </div>
+}
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js")
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+    <script>
+        "use strict";
+
+        var x = $("#product_Id").val();
+
+        if (x == "") {
+            $('#prodcutInfo').hide();
+
+        }
+        else if (x != "") {
+            $('#prodcutInfo').show();
+
+        }
+
+
+        $(document).ready(function () {
+            $(".datepicker-issueddate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: false,
+                maxDate: new Date(),
+                appendText: '<span class="help-block">(yyyy-mm-dd)</span>',
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+
+        function GetType(ctrl) {
+            var x = $("#paymentForm_PaymentTypeId").val();
+
+            if (x == "") {
+                $('#pay').hide();
+                $('#orderdesc').hide();
+                $('#wf-action-btn').hide();
+
+            }
+
+            if (x == "3") {
+                $('#pay').hide();
+                $('#orderdesc').show();
+                $('#wf-action-btn').show();
+
+            }
+            else if (x == "4") {
+                $('#pay').hide();
+                $('#orderdesc').show();
+                $('#wf-action-btn').show();
+
+            }
+            else if (x == "5") {
+                $('#pay').show();
+                $('#orderdesc').show();
+                $('#wf-action-btn').show();
+
+            }
+
+        }
+    </script>
+
+
+
+
+
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    <a href="@Url.Action("TransactionHistory", "Customer", new {Id=Model.Customer.Id,area="Setup"})" class="btn btn-xs btn-warning">Back</a>   <a href="@Url.Action("PaymentHistory", "Pos", new {Id=Model.Customer.Id, TransId=Model.TransId,area="Admin"})" class="btn btn-xs btn-danger">Payment History</a>
+                </h4>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Mobile No</th>
+                            <th>Modified By</th>
+                            <th>Modified Date</th>
+                            <th>Is Deleted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="font-size: 12px;">
+                            <td>
+                                1
+                            </td>
+                            <td>@Model.Customer.Name</td>
+                            <td>@Model.Customer.MobileNo</td>
+
+                            <td>@Model.Customer.ModifiedBy</td>
+                            <td>@Model.Customer.ModifiedDate</td>
+                            <td>
+                                @if (Model.Customer.IsDeleted == true)
+                                {
+                                    <span class="label label-danger">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-success">No</span>
+                                }
+                            </td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="PermitView">
+    <div class="col-md-8">
+
+
+        <div class="widget">
+            <div class="widget-header">
+                <h4><i class="icon-reorder"></i>Product Information   </h4>
+                <div class="toolbar">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span></div>
+                </div>
+            </div>
+            <div class="widget-content">
+                @Html.HiddenFor(x => x.Customer.Id)
+                @Html.HiddenFor(x => x.TransId)
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Prdouct Name</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Total Price</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="guarantor-table">
+                        @if (Model.ShoppingCartList.Count > 0)
+                        {
+                            int i = 1;
+                            foreach (var g in Model.ShoppingCartList)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@g.Product.Name</td>
+                                    <td>@g.Quality</td>
+                                    <td>
+                                        ₦@String.Format("{0:n0}", g.Price)
+                                    </td>
+                                    <td>  ₦@String.Format("{0:n0}", g.TotalPrice)</td>
+
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="99">No Record found!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="widget">
+            <div class="widget-header">
+                <h4><i class="icon-reorder"></i>Payment Pane</h4>
+                <div class="toolbar">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span></div>
+                </div>
+            </div>
+            <div class="widget-content">
+                <div class="list-group">
+                    <form method="post" action="@Url.Action("InstallmentalPayment", "Pos")" id="wf-action-form">
+                        <li class="list-group-item">
+
+                            <div class="row" style="padding: 0 5px">
+
+                                @{
+                                    var getPaymentSum = db.Payment.Where(x => x.TransId == Model.TransId).Sum(x => x.AmountPaid);
+                                }
+                                <div class="form-group">
+                                    @Html.Label("Total Amount Paid ₦")
+
+                                    ₦@String.Format("{0:n0}", getPaymentSum)
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("Balance to Pay ₦")
+                                    @Html.DisplayFor(x => Model.payment.Balance)
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("Select Payment Type")
+                                    @Html.DropDownListFor(m => Model.paymentForm.PaymentTypeId, new SelectList(Model.PaymentTypeList, "Value", "Text"), new { @class = "form-control", onchange = "return GetType(this);" })
+                                    @Html.ValidationMessageFor(x => x.paymentForm.PaymentTypeId, null, new { @style = "color:red" })
+                                </div>
+
+                                <div id="myaccount">
+
+                                    <div class="form-group">
+                                        <div id="payment">
+                                            @Html.Label("Pay with My Account")
+                                            @Html.CheckBoxFor(m => Model.UseAccount)
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="pay">
+
+                                    <div class="form-group">
+                                        <div id="payment">
+                                            @Html.Label("Amount Paid ₦")
+                                            @Html.TextBoxFor(m => Model.paymentForm.AmountPaid, null, new { @class = "form-control" })
+                                            @Html.HiddenFor(x => x.Customer.Id)
+                                            @Html.HiddenFor(x => x.TransId)
+                                            @Html.HiddenFor(x => x.paymentForm.TotalAmount)
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <div id="orderdesc">
+
+                                    <div class="form-group">
+                                        <div id="payment">
+                                            @Html.Label("Order Description")
+                                            @Html.TextBoxFor(m => Model.paymentForm.OrderDescription, null, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.paymentForm.OrderDescription, null, new { @style = "color:red" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+
+                                    <input type="submit" value="Submit" onclick="return ConfirmOrder()" class="btn btn-warning" id="wf-action-btn" />
+                                </div>
+                            </div>
+                        </li>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<script src="~/Content/Backend/assets/js/libs/jquery-1.10.2.min.js"></script>
+
+
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+<script type="text/javascript">
+    $(function () {
+        $("#UseAccount").click(function () {
+            if ($(this).is(":checked")) {
+                $("#pay").hide();                
+            } else {
+                $("#pay").show();
+            }
+        });
+    });
+</script>
+
+

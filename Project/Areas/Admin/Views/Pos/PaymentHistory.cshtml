@@ -1,0 +1,177 @@
+﻿@model Project.Areas.Admin.Models.PosViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Payment History";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+    var db = new Project.DAL.PROEntities();
+}
+@section Crumbs{
+    <div class="crumbs">
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Payment History</li>
+        </ul>
+    </div>
+}
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js")
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    <a href="@Url.Action("TransactionHistory", "Customer", new {Id=Model.Customer.Id,area="Setup"})" class="btn btn-xs btn-warning">Back</a>    
+                    <a class="btn btn-inverse btn-xs" href="javascript:void(0);" onclick="javascript:window.print();">
+                        Print
+                    </a>
+                    
+                </h4>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Mobile No</th>
+                            <th>Modified By</th>
+                            <th>Modified Date</th>
+                            <th>Is Deleted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="font-size: 12px;">
+                            <td>
+                                1
+                            </td>
+                            <td>@Model.Customer.Name</td>
+                            <td>@Model.Customer.MobileNo</td>
+
+                            <td>@Model.Customer.ModifiedBy</td>
+                            <td>@Model.Customer.ModifiedDate</td>
+                            <td>
+                                @if (Model.Customer.IsDeleted == true)
+                                {
+                                    <span class="label label-danger">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-success">No</span>
+                                }
+                            </td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="PermitView">
+    <div class="col-md-12">
+
+
+        <div class="widget">
+            <div class="widget-header">
+                <h4><i class="icon-reorder"></i>Product Information   </h4>
+                <div class="toolbar">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span></div>
+                </div>
+            </div>
+            <div class="widget-content">
+                @Html.HiddenFor(x => x.Customer.Id)
+                @Html.HiddenFor(x => x.TransId)
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Payment Type</th>
+                            <th>Amount Paid</th>
+                            <th>Balance</th>
+                            <th>Remark</th>
+                            <th>Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="guarantor-table">
+                        @if (Model.InstallmentalTransactionlist.Count > 0)
+                        {
+                            int i = 1;
+                            foreach (var g in Model.InstallmentalTransactionlist)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@g.Payment.TransactionType.Name</td>
+                                    <td>
+                                        ₦@String.Format("{0:n0}", g.AmountPaid)
+                                    </td>
+                                    <td>
+                                        ₦@String.Format("{0:n0}", g.Balance)
+                                    </td>
+                                    <td>
+                                        @g.Payment.OrderDescription
+                                    </td>
+                                    <td>
+                                        @g.PaymentDate
+                                    </td>
+
+                                </tr>
+                                i++;
+                            }
+                            <tr>
+                                <td colspan="8" style="text-align:right"><h4>Total Amount to be Paid: ₦@String.Format("{0:n0}", Model.InstallmentalTransactionlist.FirstOrDefault().TotalAmount) </h4></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="99">No Record found!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to remove this Category from you Store?"))
+            return true;
+        else
+            return false;
+    }
+
+</script>
+
+

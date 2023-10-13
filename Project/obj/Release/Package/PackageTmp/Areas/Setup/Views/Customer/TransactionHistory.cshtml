@@ -1,0 +1,200 @@
+﻿@model Project.Areas.Setup.Models.CustomerViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Customer Transaction";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Customer Transaction </li>
+        </ul>
+    </div>
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+}
+
+<a href="@Url.Action("Index", "Customer", new {area="Setup"})" class="btn btn-xs btn-warning">Back</a>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Customer Information
+                </h4>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Mobile No</th>
+                            <th>Modified By</th>
+                            <th>Modified Date</th>
+                            <th>Is Deleted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="font-size: 12px;">
+                            <td>
+                                1
+                            </td>
+                            <td>@Model.Customer.Name</td>
+                            <td>@Model.Customer.MobileNo</td>
+
+                            <td>@Model.Customer.ModifiedBy</td>
+                            <td>@Model.Customer.ModifiedDate</td>
+                            <td>
+                                @if (Model.Customer.IsDeleted == true)
+                                {
+                                    <span class="label label-danger">Yes</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-success">No</span>
+                                }
+                            </td>
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Transaction History                   
+                    @*<a data-toggle="modal" href="#myModal1" class="btn btn-xs btn-danger">Make Deposit</a>
+                    @Html.ActionLink("View Report  ", "SearchCustomerTransaction", new { Id = Model.Customer.Id }, new { @class = "btn btn-xs btn-primary" })*@
+                </h4>
+
+              
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover table-checkable datatable dataTable">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Transaction Type</th>
+                            <th>Transaction Id</th>
+                            <th>Total Amount</th>
+                            <th>Amount Paid</th>
+                            <th>Balance to Pay</th>
+                            <th>Order Description</th>
+                            <th>Payment Date</th>
+                            <th>Action</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.payment.Count != 0)
+                        {
+                            int i = 0;
+                            foreach (var item in Model.payment)
+                            {
+                                ++i;
+                        <tr style="font-size: 12px;">
+                            <td>
+                                @i
+                            </td>
+                            <td>
+                                @item.TransactionType.Name
+                            </td>
+                            <td>
+                                @item.TransId
+                            </td>
+
+                            <td>₦@String.Format("{0:n0}", item.TotalAmount)</td>
+                            <td>₦@String.Format("{0:n0}", item.AmountPaid)</td>
+                            <td>₦@String.Format("{0:n0}", item.Balance)</td>
+                            <td>@item.OrderDescription</td>                                                        
+                            <td>@item.PaymentDate</td>
+                            <td>
+                                <div class="dropdown">
+                                    <span class="btn dropdown-toggle btn-xs btn-success" type="button" id="dropdownMenu1" data-toggle="dropdown">Action List <i class="icon-angle-down"></i></span>
+                                    <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="dropdownMenu1">
+
+                                        <li role="presentation">
+                                            @Html.ActionLink("Print Receipt", "PrintCustomerTransaction", new { Id = item.Customer.Id, TransId = item.Id }, new { role = "menuitem", tabindex = "-1" })
+                                        </li>
+                                        <li role="presentation">
+                                            @Html.ActionLink("Order History", "CustomerOrderHistory", new { Id = item.CustomerId, TransId = item.TransId }, new { role = "menuitem", tabindex = "-1" })
+                                        </li>
+                                        @if (item.AmountPaid == item.TotalAmount)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <li role="presentation">
+
+                                                @Html.ActionLink("Pay Balance", "InstallmentalPayment", "Pos", new { Id = item.CustomerId, TransId = item.TransId, area="Admin" }, new { role = "menuitem", tabindex = "-1", onclick = "return DeleteConfirm()" })
+                                            </li>
+                                        }
+
+
+                                    </ul>
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+                            }
+                            @*<tr>
+                                <td colspan="8" style="text-align:right"><h4>Total balance: ₦@String.Format("{0:n0}", Model.CurrentBalance) </h4></td>
+                            </tr>*@
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8">No Records Found!...</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+
+    <script>
+        "use strict";
+
+    </script>
+}

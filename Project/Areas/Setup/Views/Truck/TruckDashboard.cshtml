@@ -1,0 +1,216 @@
+﻿@model Project.Areas.Setup.Models.TruckViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Truck Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tabbable tabbable-custom tabbable-full-width">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tab_overview" data-toggle="tab">Summary</a>
+                </li>
+                <li class=""><a href="#tab_edit_account" data-toggle="tab">Report</a></li>
+            </ul> <div class="tab-content row">
+                <div class="tab-pane active" id="tab_overview">
+                    <div class="col-md-3">
+                        <div class="list-group">
+                            <li class="list-group-item no-padding">
+                                @*<img src="~/Content/Backend/assets/img/demo/bez.jpg" alt="">*@
+                                <img src="@Url.Action("DocumentsUploadedPath", new { Path=(Model.FullPhotoPath) + Model.truck.Photo})" style="border:solid" />
+                            </li>
+                            @foreach (var raw in Model.TruckMaterial)
+                            {
+                                <a href="javascript:void(0);" class="list-group-item">@raw.Name</a>
+                            }
+
+
+
+                        </div>
+
+                        @Html.ActionLink("Assign Material", "AssignMaterial", new { Id = Model.truck.Id }, new { @class = "btn btn-xs btn-success" })  @Html.ActionLink("Truck Expense", "TruckExpense", new { Id = Model.truck.Id }, new { @class = "btn btn-xs btn-danger" })
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="row profile-info">
+
+                            <div class="col-md-7">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4><i class="icon-reorder"></i> Truck Information</h4>
+                                    </div>
+                                    <div class="widget-content">                                       
+                                        <table class="table table-striped">
+                                            <thead>
+
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <td><span class="label label-primary">Truck Name:</span></td>
+                                                    <td>@Model.truck.Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="label label-primary">Truck No:</span></td>
+                                                    <td>@Model.truck.Number</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4><i class="icon-reorder"></i> Drivers</h4>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="tabbable tabbable-custom">
+                                                                           
+                                                <div class="tab-pane active" id="tab_feed_1">
+                                                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 290px;">
+                                                        <div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible="0" style="overflow: hidden; width: auto; height: 290px;">
+                                                            <ul class="feeds clearfix">
+                                                                @foreach (var n in Model.EmployeeList)
+                                                                {
+                                                                    <li>
+                                                                        <div class="col1">
+                                                                            <div class="content">
+                                                                                <div class="content-col5">
+                                                                                    <div class="">
+                                                                                        @*<img src="~/Content/Backend/assets/img/demo/avatar-1.jpg" height="70" width="70" alt="">*@
+                                                                                        <img src="@Url.Action("DocumentsUploadedPath", new { Path=(Model.FullPhotoPath) + n.Photo})" style="border:solid" height="70" width="70" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <br />
+                                                                                <div class="">
+                                                                                    <div class="desc"><b>@n.FirstName @n.LastName</b></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+
+                                                                }
+
+                                                                
+                                                                @Html.ActionLink("Assign Driver", "AssignDriver", new { Id = Model.truck.Id }, new { @class = "btn btn-xs btn-warning" })
+                                                            </ul>
+                                                        </div>
+                                                        <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 7px; position: absolute; top: 16px; opacity: 0.2; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 156.611px;">
+                                                            </div>
+                                                        <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="widget">
+                                    <div class="widget-content">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_edit_account">
+                    <form class="form-horizontal" action="#">
+                        <div class="col-md-12">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h4>General Information</h4>
+                                </div>
+                                <div class="widget-content">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">First name:</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" name="regular" class="form-control" value="John">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Last name:</label>
+                                                <div class="col-md-8"><input type="text" name="regular" class="form-control" value="Doe"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Gender:</label>
+                                                <div class="col-md-8">
+                                                    <select class="form-control">
+                                                        <option value="male" selected="selected">Male</option>
+                                                        <option value="female">Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">Age:</label>
+                                                <div class="col-md-8">
+                                                    <input type="text" name="regular" class="form-control input-width-small" value="28">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-vertical no-margin">
+                            <div class="widget">
+                                <div class="widget-header">
+                                    <h4>Settings</h4>
+                                </div>
+                                <div class="widget-content">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-2">
+
+                                            <strong class="subtitle padding-top-10px">Permanent username</strong>
+                                            <p class="text-muted">Dolor sit amet.</p>
+                                        </div>
+                                        <div class="col-md-8 col-lg-10">
+                                            <div class="form-group">
+                                                <label class="control-label padding-top-10px">Username:</label>
+                                                <input type="text" name="username" class="form-control" value="john.doe" disabled="disabled">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-2">
+                                            <strong class="subtitle">Change password</strong>
+                                            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </div> <div class="col-md-8 col-lg-10">
+                                            <div class="form-group">
+                                                <label class="control-label">Old password:</label>
+                                                <input type="password" name="old_password" class="form-control" placeholder="Leave empty for no password-change">
+                                            </div> <div class="form-group">
+                                                <label class="control-label">New password:</label>
+                                                <input type="password" name="new_password" class="form-control" placeholder="Leave empty for no password-change">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Repeat new password:</label>
+                                                <input type="password" name="new_password_repeat" class="form-control" placeholder="Leave empty for no password-change">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <input type="submit" value="Update Account" class="btn btn-primary pull-right">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

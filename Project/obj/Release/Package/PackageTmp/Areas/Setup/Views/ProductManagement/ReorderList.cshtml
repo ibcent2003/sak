@@ -1,0 +1,277 @@
+﻿@model Project.Areas.Setup.Models.ProductManagementViewModel
+@{
+    ViewBag.Title = "Re-Order List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)">Re-order List</a> </li>
+
+        </ul>
+    </div>
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <a href="@Url.Action("Index", "ProductManagement", new {area = "Setup" })" class="btn btn-xs btn-info">Back</a> 
+                <div class="toolbar no-padding">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span><span class="btn btn-xs widget-refresh"><i class="icon-refresh"></i></span></div>
+                </div>
+            </div>
+
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover table-checkable datatable dataTable">
+                    <thead>
+                        <tr>
+
+                            <th>SN</th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Qty
+                            </th>
+                            <th>
+                                Total Price
+                            </th>
+                            <th>
+                                Reorder Lev.
+                            </th>
+
+                            <th>
+                                Photo
+                            </th>
+                            <th>
+                                Deleted?
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model.ProductList.Count != 0)
+                        {
+
+                            int i = 0;
+                            foreach (var item in Model.ProductList)
+                            {
+                                ++i;
+                                int qty = item.Quantity;
+                                decimal price = item.DiscountPrice;
+                                decimal total = qty * price;
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        @item.RawMaterial.Name
+                                    </td>
+                                    <td>
+                                        <span class="label label-danger"> <strong>₦@String.Format("{0:n0}", item.DiscountPrice)</strong></span>
+                                    </td>
+
+
+                                    <td>
+                                        <span class="label label-info"> <strong>@item.Quantity</strong></span>
+                                    </td>
+
+                                    <td>
+                                        <strong>₦@String.Format("{0:n0}", total)</strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="label label-success"> <strong>@item.ReoderLevel</strong></span>
+                                    </td>
+                                    <td>
+                                        <img src="@Url.Action("DocumentsUploadedPath", new { Path = (Model.documentPath) + item.Photo1 })" height="50" width="50" style="border:solid" />
+                                    </td>
+                                    <td>
+                                        @if (item.IsDeleted == true)
+                                        {
+                                            <span class="label label-success"> <strong>Yes</strong></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-danger"> <strong>No</strong></span>
+                                        }
+                                    </td>
+                                    <td>
+
+                                        <div class="dropdown">
+                                            <span class="btn dropdown-toggle btn-xs btn-danger" type="button" id="dropdownMenu1" data-toggle="dropdown">Action<i class="icon-angle-down"></i></span>
+                                            <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">@Html.ActionLink("Re-Order", "ReorderProduct", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>                                               
+                                                <li role="presentation"><a data-toggle="modal" title="Product Information" href="#@item.Id"><i class="icon-eye-open"></i></a></li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+
+
+
+
+                                            <div class="modal fade" id="@item.Id">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">Product Information</h4>
+
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <table class="my-acct">
+
+                                                                <tr>
+                                                                    <td>Product Type: </td>
+                                                                    <td>@item.RawMaterial.Name</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Product Name: </td>
+                                                                    <td>@item.Name</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Discount Price: </td>
+                                                                    <td>
+                                                                        ₦
+                                                                        @String.Format("{0:n0}", item.DiscountPrice)
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Acutal Price: </td>
+                                                                    <td>₦@String.Format("{0:n0}", item.ActualPrice)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Quantity: </td>
+                                                                    <td>@item.Quantity</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Reorder Level: </td>
+                                                                    <td>@item.ReoderLevel</td>
+                                                                </tr>
+
+
+
+
+
+                                                                <tr>
+                                                                    <td>Photo:</td>
+                                                                    <td>
+                                                                        <img src="@Url.Action("DocumentsUploadedPath", new { Path = (Model.documentPath) + item.Photo1 })" height="100" width="100" style="border:solid" />
+                                                                        @if (item.Photo2 != null)
+                                                                        {
+                                                                            <img src="@Url.Action("DocumentsUploadedPath", new { Path = (Model.documentPath) + item.Photo2 })" height="100" width="100" style="border:solid" />
+                                                                        }
+
+
+
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Description:</td>
+                                                                    <td>
+                                                                        @Html.Raw(item.Description)
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Modified By:</td>
+                                                                    <td>
+                                                                        @item.ModifiedBy
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Modified Date:</td>
+                                                                    <td>
+                                                                        @item.ModifiedDate
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Is Deleted:</td>
+                                                                    <td>
+                                                                        @if (item.IsDeleted == true)
+                                                                        {
+                                                                            <span class="label label-success"> <strong>Yes</strong></span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="label label-danger"> <strong>No</strong></span>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+
+
+                                                            </table>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to remove this Category from you Store?"))
+            return true;
+        else
+            return false;
+    }
+
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+    </script>
+}

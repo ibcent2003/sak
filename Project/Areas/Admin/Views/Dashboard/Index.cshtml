@@ -1,0 +1,151 @@
+﻿@model Project.Areas.Admin.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+
+        </ul>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                 <a href="@Url.Action("Index", "Expenses", new {area = "Setup" })" class="btn btn-xs btn-success">In-House Expenses</a>  
+                <div class="toolbar no-padding">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span><span class="btn btn-xs widget-refresh"><i class="icon-refresh"></i></span></div>
+                </div>
+            </div>
+            </div></div></div>
+
+
+            <div class="row row-bg">
+                <div class="col-sm-6 col-md-3">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual cyan">
+
+                                <p style="font-size:30px">
+                                    &#128507;
+                                </p>
+                            </div>
+
+                            <div class="title">Total Customers</div>
+                            <div class="value">@Model.TotalCustomers</div>
+                            <a class="more" href="@Url.Action("Index", "Customer", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual green">
+                                @*<img src="~/Content/NewFront/img/master/software.jpg" width="60" height="60">*@
+                                <p style="font-size:30px">
+                                    &#128345;
+                                </p>
+                            </div>
+                            <div class="title">Total Products</div>
+                            <div class="value">@Model.TotalProduct</div>
+                            <a class="more" href="@Url.Action("Index", "ProductManagement", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 hidden-xs">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual yellow">
+                                <p style="font-size:30px">
+                                    &#128181;
+                                </p>
+                            </div>
+                            <div class="title">No of Payments</div>
+                            <div class="value">@Model.TotalPayment</div>
+                            <a class="more" href="@Url.Action("PaymentList", "Dashboard", new { area="Admin"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 hidden-xs">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual red">
+                                <p style="font-size:30px">
+                                    &#128104;
+                                </p>
+                            </div>
+                            <div class="title">Total Employee</div>
+                            <div class="value">@Model.TotalEmployee</div>
+                            <a class="more" href="@Url.Action("EmployeeList", "EmployeeManagement", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row row-bg">
+                <div class="col-sm-6 col-md-3">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual cyan">
+
+                                <p style="font-size:30px">
+                                    &#128180;
+                                </p>
+                            </div>
+
+                            <div class="title">Raw Material</div>
+                            <div class="value">@Model.TotalRawmaterial</div>
+                            <a class="more" href="@Url.Action("Index", "RawMaterial", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual green">
+                                @*<img src="~/Content/NewFront/img/master/software.jpg" width="60" height="60">*@
+                                <p style="font-size:30px">
+                                    &#128666;
+                                </p>
+                            </div>
+                            <div class="title">Total Trucks</div>
+                            <div class="value">@Model.TotalTruck</div>
+                            <a class="more" href="@Url.Action("Index", "Truck", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 hidden-xs">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual blue">
+                                <p style="font-size:30px">
+                                    &#129534;
+                                </p>
+                            </div>
+                            <div class="title">Product to Re-Order</div>
+                            <div class="value">@Model.Reoder</div>
+                            <a class="more" href="@Url.Action("ReorderList", "ProductManagement", new { area="Setup"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 hidden-xs">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-content">
+                            <div class="visual blue">
+                                <p style="font-size:30px">
+                                    &#128180;
+                                </p>
+                            </div>
+                            <div class="title">Sales Report</div>
+                            <div class="value">@Model.TotalSalesType</div>
+                            <a class="more" href="@Url.Action("PaymentTypeList", "Dashboard", new { area="Admin"})">View More <i class="pull-right icon-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>

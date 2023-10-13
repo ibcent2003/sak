@@ -1,0 +1,118 @@
+﻿@model Project.Areas.Setup.Models.TruckViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Trucks List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Trucks List </li>
+        </ul>
+    </div>
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget-header">
+           
+        </div>
+        <br />
+        <div class="widget-content">
+            <table class="table table-striped table-bordered table-hover table-checkable datatable dataTable">
+                <thead>
+                    <tr style="font-size: 12px;">
+                        <th>S/N</th>
+                        <th>Name</th>
+                        <th>Number</th>
+                        <th>Photo</th>
+                        <th>Modified By</th>
+                        <th>Modified Date</th>
+                        <th>Is Deleted</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TruckList.Count != 0)
+                    {
+                        int i = 0;
+                        foreach (var item in Model.TruckList)
+                        {
+                            ++i;
+                            <tr style="font-size: 12px;">
+                                <td>
+                                    @i
+                                </td>
+                                <td>@Html.ActionLink(item.Name, "EditTruck", new { Id = item.Id }, null)</td>
+
+                                <td>@item.Number</td>
+                                <td><img src="@Url.Action("DocumentsUploadedPath", new { Path=(Model.FullPhotoPath) + item.Photo})" height="50" width="50" style="border:solid" </td>
+                                <td>@item.ModifiedBy</td>
+                                <td>@item.ModifiedDate</td>
+                                <td>
+                                    @if (item.IsDeleted == true)
+                                    {
+                                        <span class="label label-danger">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-success">No</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <span class="btn dropdown-toggle btn-xs btn-danger" type="button" id="dropdownMenu1" data-toggle="dropdown">Action<i class="icon-angle-down"></i></span>
+                                        <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                                            <li role="presentation">@Html.ActionLink("Record Expenses", "ExpensesDecision", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+                                            <li role="presentation">@Html.ActionLink("Vew Expenses", "ViewExpenses", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+                                            <li role="presentation">@Html.ActionLink("Assign Material", "AssignMaterial", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+                                            <li role="presentation">@Html.ActionLink("Assign Driver", "AssignDriver", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">No Records Found!...</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+    </script>
+}
+
+<script type="text/javascript">
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to remove this member?"))
+            return true;
+        else
+            return false;
+    }
+
+
+</script>

@@ -1,0 +1,294 @@
+﻿@model Project.Areas.Setup.Models.CustomerViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Order History";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Order History </li>
+        </ul>
+    </div>
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget invoice">
+            <div class="widget-header">
+                <div class="pull-left">
+                    <img width="250" height="80" src="~/Content/sak1.jpg" />
+                </div>
+                <div class="pull-right">
+                    <h3>Office Address</h3>
+                    <address>
+                        Opposite Kaduna State High Court, <br>Dogarawa, Sabon Gari Zaria, Kaduna, Nigeria.<br>
+                        <abbr title="Phone">P:</abbr> ++2348035881849<br />
+                        <abbr title="Email">Email:</abbr>info@sakintegratedconceptltd.com.ng<br />
+                        <abbr title="WebSite">WebSite:</abbr>www.sakintegratedconceptltd.com.ng
+                    </address>
+                </div>
+            </div>
+           
+
+        </div>
+       
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Customer Information &nbsp;&nbsp;<a href="@Url.Action("TransactionHistory", "Customer", new {Id=Model.Customer.Id,area="Setup"})" class="btn btn-xs btn-warning">Back</a> &nbsp;
+                    
+                                                     <a class="btn btn-danger btn-xs" href="javascript:void(0);" onclick="javascript:window.print();">
+                                                         Print
+                                                     </a>
+                 
+                </h4>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Mobile No</th>
+                            <th>Modified By</th>
+                            <th>Modified Date</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="font-size: 12px;">
+                            <td>
+                                1
+                            </td>
+                            <td>@Model.Customer.Name</td>
+                            <td>@Model.Customer.MobileNo</td>
+
+                            <td>@Model.Customer.ModifiedBy</td>
+                            <td>@Model.Customer.ModifiedDate</td>
+                            
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Order History
+                </h4>
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover table-checkable datatable dataTable">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Line Total</th>
+                            @*<th>Has Discount?</th>*@
+                            <th>Has Paid?</th>
+                            <th>Photo</th>
+                            @*<th>Action</th>*@
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.cart.Count != 0)
+                        {
+                            int i = 0;
+                            foreach (var item in Model.cart)
+                            {
+                                ++i;
+                                <tr style="font-size: 12px;">
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @item.Product.Name
+                                    </td>
+                                    <td>
+                                        @item.Quality
+                                    </td>
+
+
+                                    <td>₦@String.Format("{0:n0}", item.Price)</td>
+                                    <td>₦@String.Format("{0:n0}", item.TotalPrice)</td>
+                                  
+                                    <td>
+                                        @if (item.HasPaid == true)
+                                        {
+                                            <span class="label label-danger">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-success">No</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <img src="@Url.Action("DocumentsUploadedPath", new { Path = (Model.documentPath) + item.Product.Photo1 })" height="50" width="50" style="border:solid" />
+                                    </td>
+
+                                    @*<td>
+                                        <div class="dropdown">
+                                            <span class="btn dropdown-toggle btn-xs btn-success" type="button" id="dropdownMenu1" data-toggle="dropdown">Action List <i class="icon-angle-down"></i></span>
+                                            <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="dropdownMenu1">
+
+                                                <li role="presentation">
+                                                    @Html.ActionLink("Print Receipt", "PrintCustomerTransaction", new { Id = item.Customer.Id, TransId = item.Id }, new { role = "menuitem", tabindex = "-1" })
+                                                </li>
+                                                <li role="presentation">
+                                                    @Html.ActionLink("Edit Transaction", "EditCustomerTransaction", new { Id = item.CustomerId, TransId = item.Id }, new { role = "menuitem", tabindex = "-1" })
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </td>*@
+
+
+                                </tr>
+                            }
+                            @*<tr>
+                                    <td colspan="8" style="text-align:right"><h4>Total balance: ₦@String.Format("{0:n0}", Model.CurrentBalance) </h4></td>
+                                </tr>*@
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8">No Records Found!...</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Payment
+                    @if (Model.Isinstallment == true)
+                    {
+                        <a href="@Url.Action("PaymentHistory", "Pos", new {Id=Model.Customer.Id,TransId=Model.TransId,area="Admin"})" class="btn btn-xs btn-inverse">View Payment</a>
+
+
+                    }
+
+
+
+
+                </h4>
+
+
+            </div>
+            <div class="widget-content">
+                <table class="table table-striped table-bordered  table-hover">
+                    <thead>
+                        <tr style="font-size: 12px;">
+                            <th>S/N</th>
+                            <th>Transaction Type</th>
+                            <th>Transaction Id</th>
+                            <th>Total Amount</th>
+                            <th>Amount Paid</th>
+                            <th>Balance to Pay</th>
+                            <th>Order Description</th>
+                            <th>Payment Date</th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.payment.Count != 0)
+                        {
+                            int i = 0;
+                            foreach (var item in Model.payment)
+                            {
+                                ++i;
+                                <tr style="font-size: 12px;">
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @item.TransactionType.Name
+                                    </td>
+                                    <td>
+                                        @item.TransId
+                                    </td>
+
+                                    <td>₦@String.Format("{0:n0}", item.TotalAmount)</td>
+                                    <td>₦@String.Format("{0:n0}", item.AmountPaid)</td>
+                                    <td>₦@String.Format("{0:n0}", item.Balance)</td>
+                                    <td>@item.OrderDescription</td>
+                                    <td>@item.PaymentDate</td>
+
+
+
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8">No Records Found!...</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+
+    <script>
+        "use strict";
+
+    </script>
+}

@@ -1,0 +1,129 @@
+﻿@model Project.Areas.Setup.Models.ExpensesViewModel
+@{
+    ViewBag.Title = "In-House Expense List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)">Expense List</a> </li>
+
+        </ul>
+    </div>
+}
+@section Styles {
+    <link href="@Url.Content("~/Content/Backend/Custom/gritter/css/jquery.gritter.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Backend/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})" class="btn btn-xs btn-info">Back</a> <a href="@Url.Action("NewExpense", "Expenses", new {area = "Setup" })" class="btn btn-xs btn-success">New Expense</a>  
+                <div class="toolbar no-padding">
+                    <div class="btn-group"><span class="btn btn-xs widget-collapse"><i class="icon-angle-down"></i></span><span class="btn btn-xs widget-refresh"><i class="icon-refresh"></i></span></div>
+                </div>
+            </div>
+
+            <div class="widget-content">
+                <table class="table table-striped table-bordered table-hover table-checkable datatable dataTable">
+                    <thead>
+                        <tr>
+
+                            <th>SN</th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Modified By
+                            </th>
+
+
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model.ExpensesList.Count != 0)
+                        {
+
+                            int i = 0;
+                            foreach (var item in Model.ExpensesList)
+                            {
+                                ++i;
+                             
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                            <td>@Html.ActionLink(item.Name, "EditExpense", new { Id = item.Id }, null)</td>
+                            <td>
+                                @item.Description
+                            </td>
+
+                            <td>
+                                <strong>₦@String.Format("{0:n0}", item.Amount)</strong>
+
+                            </td>
+
+                            <td>
+                                @item.ExpensiveDate.ToShortDateString()
+                            </td>
+
+                            <td>
+                                @item.ModifiedBy
+                            </td>
+
+                          
+
+                        </tr>
+
+                            }
+
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to remove this Category from you Store?"))
+            return true;
+        else
+            return false;
+    }
+
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+    </script>
+}

@@ -1,0 +1,222 @@
+﻿@model Project.Areas.Setup.Models.CustomerViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Customer List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+    var db = new Project.DAL.PROEntities();
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Customer List </li>
+        </ul>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget-header">
+            <h4></h4>
+        </div>
+        <div class="widget-content">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-12">
+                    @Html.ActionLink("New Customer", "NewCustomer", null, new { @class = "btn btn-xs btn-warning" })
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="dataTables_header clearfix">
+                    <div class="col-md-6">
+                        @using (Html.BeginForm("Index", "Customer", FormMethod.Post))
+                        {
+                            <div id="DataTables_Table_0_length" class="dataTables_length">
+                                <label>
+
+                                    @Html.DropDownList("pgsize", new SelectList(Project.Models.PageSizeOption.Limit, "Value", "Label", Model.PageSize), new { onchange = "this.form.submit()", @class = "select2-offscreen", tabindex = "-1" })
+                                    @Html.Hidden("page", 1)
+                                    @Html.Hidden("keywords", Model.CurrentKeywords)
+
+                                    records per page
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        @using (Html.BeginForm("Index", "Customer"))
+                        {
+
+                            <div class="dataTables_filter" id="DataTables_Table_0_filter">
+                                <label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" onclick="this.form.submit()"><i class="icon-search"></i></span>
+
+
+                                        @Html.TextBox("keywords", null, new { @class = "form-control", placeholder = "Type a keyword(s) here to search..." })
+                                        @Html.Hidden("page", 1)
+
+                                    </div>
+                                </label>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-striped table-bordered table-hover table-checkable table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            S/N
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Phone Number
+                        </th>
+
+
+
+                        <th>
+                            Modified By
+                        </th>
+                        <th>
+                            Modified Date
+                        </th>
+                        <th>
+                            Is Deleted?
+                        </th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.PagingInfo.TotalItems != 0)
+                    {
+
+                        int i = Model.PagingInfo.FirstItem;
+                        foreach (var item in Model.CustomerList)
+                        {
+
+
+
+                    <tr>
+                        <td>
+                            @i
+                            @{++i;}
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.MobileNo
+                        </td>
+
+                       
+
+
+
+                        <td>
+                            @item.ModifiedBy
+                        </td>
+                        <td>
+                            @item.ModifiedDate
+
+                        </td>
+                        <td>
+                            @if (item.IsDeleted == true)
+                            {
+                                <span class="label label-danger">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">No</span>
+                            }
+
+                        </td>
+
+                        <td>
+
+                            <div class="dropdown">
+                                <span class="btn dropdown-toggle btn-xs btn-success" type="button" id="dropdownMenu1" data-toggle="dropdown">Action List <i class="icon-angle-down"></i></span>
+                                <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">@Html.ActionLink("Edit", "EditCustomer", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+
+                                    @{
+                                        var getUncheckPaid = db.ShoppingCart.Where(x => x.Customer.Id == item.Id && x.HasPaid == false).ToList();
+                                    }
+                                    @if (getUncheckPaid.Any())
+                                    {
+                                        <li role="presentation">@Html.ActionLink("Record Sales", "RecordSales", "Pos", new { Id = item.Id, TransId = getUncheckPaid.FirstOrDefault().TransId, area = "Admin" }, new { role = "menuitem", tabindex = "-1" })</li>
+                                    }
+                                    else
+                                    {
+                                        <li role="presentation">@Html.ActionLink("Record Sales", "RecordSales", "Pos", new { Id = item.Id, TransId = Model.TransId, area = "Admin" }, new { role = "menuitem", tabindex = "-1" })</li>
+                                    }
+
+
+
+                                    <li role="presentation">@Html.ActionLink("Account Balance", "CustomerTransaction", "Customer", new { Id = item.Id, area = "Setup" }, new { role = "menuitem", tabindex = "-1" })</li>
+                                    <li role="presentation">@Html.ActionLink("Transaction History", "TransactionHistory", "Customer", new { Id = item.Id }, new { role = "menuitem", tabindex = "-1" })</li>
+
+
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="99">No Records Found!...</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.PagingInfo.TotalItems != 0)
+            {
+                <div class="row">
+                    <div class="dataTables_footer clearfix">
+                        <div class="col-md-6">
+                            <div class="dataTables_info" id="DataTables_Table_0_info">
+                                Showing @Model.PagingInfo.FirstItem to @Model.PagingInfo.LastItem of @Model.PagingInfo.TotalItems entries
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dataTables_paginate paging_bootstrap">
+                                <ul class="pagination pagination-sm pull-right">
+
+                                    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", "Customer", new { page = x, keywords = Model.CurrentKeywords, pgsize = Model.PageSize }))
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to remove this member?"))
+            return true;
+        else
+            return false;
+    }
+
+
+</script>

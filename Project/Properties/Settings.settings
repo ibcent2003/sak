@@ -1,0 +1,51 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Project.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="GenericExceptionMessage" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">System could not process this request at this time. Please try again or contact administrator</Value>
+    </Setting>
+    <Setting Name="AppWarnMinutes" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="DateTimeFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MMMM dd, yyyy H:mm:ss</Value>
+    </Setting>
+    <Setting Name="DateFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MMMM dd, yyyy</Value>
+    </Setting>
+    <Setting Name="TimeFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)"> H:mm:ss</Value>
+    </Setting>
+    <Setting Name="PhotoPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/Content/Backend/Photo/</Value>
+    </Setting>
+    <Setting Name="FullPhotoPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">h:\root\home\rocktea-001\www\sak\Content\Backend\SAKDocument\Photo\</Value>
+    </Setting>
+    <Setting Name="EmployeeTypeId" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="SAKAccount" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="Cash" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="Installmental" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="Credit" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Debit" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="keepserver" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">h:\root\home\rocktea-001\www\sak\Content\Backend\SAKDocument\Photo\</Value>
+    </Setting>
+    <Setting Name="keeplocal" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">~/Content/Backend/Photo/</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

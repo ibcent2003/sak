@@ -1,0 +1,155 @@
+﻿@model Project.Areas.Setup.Models.TruckViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Edit Truck Expense";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tabbable tabbable-custom tabbable-full-width">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tab_overview" data-toggle="tab">Truck Information</a>
+                </li>
+
+            </ul> <div class="tab-content row">
+                <div class="tab-pane active" id="tab_overview">
+                    <div class="col-md-3">
+                        <div class="list-group">
+                            <li class="list-group-item no-padding">
+                                <img src="@Url.Action("DocumentsUploadedPath", new { Path=(Model.FullPhotoPath) + Model.truck.Photo})" style="border:solid" />
+                            </li>
+                            <a href="#" class="list-group-item">@Model.truck.Name</a>
+                            <a href="#" class="list-group-item">@Model.truck.Number</a>
+                        </div>
+
+                        @Html.ActionLink("Back", "TruckDashboard", new { Id = Model.truck.Id }, new { @class = "btn btn-xs btn-success" }) @Html.ActionLink("Edit Truck", "EditTruck", new { Id = Model.truck.Id }, new { @class = "btn btn-xs btn-danger" })
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="row profile-info">
+
+                            <div class="col-md-7">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h4><i class="icon-reorder"></i> Truck Expense</h4>
+                                    </div>
+                                    <div class="widget-content">
+
+                                        @using (Html.BeginForm("EditTruckExpense", "Truck", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal row-border" }))
+                                        {
+
+                                            @Html.AntiForgeryToken()
+                                            @Html.HiddenFor(x => x.truck.Id)
+                                            @Html.HiddenFor(x => x.TruckExpenseform.Id)
+
+                                            <div class="form-group">
+                                                @Html.Label("Descrption", new { @class = "col-md-3 control-label required" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(m => m.TruckExpenseform.Description, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.TruckExpenseform.Description, null, new { @style = "color:red" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Amount", new { @class = "col-md-3 control-label required" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(m => m.TruckExpenseform.Amount, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.TruckExpenseform.Amount, null, new { @style = "color:red" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Existing Receipt", new { @class = "col-md-3 control-label required" })
+                                                <div class="col-md-6">
+                                                    <a target="_blank" href="@Url.Action("DocumentsUploadedPath", new { Path = (Model.FullPhotoPath) + Model.TruckExpense.Receipt })"><i class="icon-download-alt"></i></a>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Receipt", new { @class = "col-md-3 control-label" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(x => x.TruckExpenseform.Receipt, new { type = "file" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.Label("Date", new { @class = "col-md-3 control-label required" })
+                                                <div class="col-md-6">
+                                                    @Html.TextBoxFor(m => m.TruckExpenseform.ExpenseDate, new { @class = "form-control datepicker-expirydate", @readonly = true })
+                                                    @Html.ValidationMessageFor(model => model.TruckExpenseform.ExpenseDate, null, new { @style = "color:red" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.Label("Is Deleted?", new { @class = "col-md-3 control-label" })
+                                                <div class="col-md-6">
+                                                    @Html.CheckBoxFor(m => m.TruckExpenseform.IsDeleted)
+                                                </div>
+                                            </div>
+                                            <div class="form-actions">
+                                                <input type="submit" class="btn btn-warning btn-xs pull-right" value="Save" />
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+        function DeleteConfirm() {
+            if (confirm("Are you sure want to remove this expense?"))
+                return true;
+            else
+                return false;
+        }
+
+        $(document).ready(function () {
+            $(".datepicker-issueddate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: true,
+                dateFormat: "yy-mm-dd",
+                maxDate: '+0D',
+                changeYear: true,
+                changeMonth: true, yearRange: "-100:-0"
+            });
+
+        });
+
+        $(document).ready(function () {
+            $(".datepicker-expirydate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: true,
+                dateFormat: "yy-mm-dd",
+                //maxDate: '+0D',
+                changeYear: true,
+                changeMonth: true
+
+            });
+        });
+
+    </script>
+}
+
+
+

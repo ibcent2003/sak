@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "POS";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)">POS</a> </li>
+
+        </ul>
+    </div>
+}
+<div class="row row-bg" style="align-items:center">
+   
+    <div class="col-sm-6 col-md-3 hidden-xs" >
+        <div class="statbox widget box box-shadow">
+            <div class="widget-content">
+                <div class="visual yellow">
+                    <img src="~/Content/NewFront/img/master/software.jpg" width="60" height="60">
+                </div>
+                <div class="title">Existing Customer</div>
+                
+                <a class="more" href="@Url.Action("Index", "Customer", new { area="Setup"})">Enter <i class="pull-right icon-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-3 hidden-xs">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-content">
+                <div class="visual red">
+                    <img src="~/Content/NewFront/img/master/software.jpg" width="60" height="60">
+                </div>
+                <div class="title">New Cutomer</div>
+                
+                <a class="more" href="@Url.Action("NewCustomer", "Customer", new { area="Setup"})">Enter<i class="pull-right icon-angle-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

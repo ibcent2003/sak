@@ -1,0 +1,131 @@
+﻿@model Project.Areas.Setup.Models.ExpensesViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "New Expenses";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>New Expense</li>
+        </ul>
+    </div>
+}
+
+<style>
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget box">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    New Expense
+
+                </h4>
+            </div>
+            <div class="widget-content">
+                @using (Html.BeginForm("NewExpense", "Expenses", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal row-border" }))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.Label("Name", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Expenseform.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Expenseform.Name, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Amount", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Expenseform.Amount, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Expenseform.Amount, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Description", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextAreaFor(m => m.Expenseform.Description, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Expenseform.Description, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Date", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Expenseform.ExpenseDate, new { @class = "form-control datepicker-expirydate", @readonly = true })
+                            @Html.ValidationMessageFor(model => model.Expenseform.ExpenseDate, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <a href="@Url.Action("Index", "Truck", new { area="Setup"})" class="btn btn-success btn-xs"><< Back to List </a>
+                        <input type="submit" class="btn btn-warning btn-xs pull-right" value="Save" />
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+        function DeleteConfirm() {
+            if (confirm("Are you sure want to remove this expense?"))
+                return true;
+            else
+                return false;
+        }
+
+        $(document).ready(function () {
+            $(".datepicker-issueddate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: true,
+                dateFormat: "yy-mm-dd",
+                maxDate: '+0D',
+                changeYear: true,
+                changeMonth: true, yearRange: "-100:-0"
+            });
+
+        });
+
+        $(document).ready(function () {
+            $(".datepicker-expirydate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: true,
+                dateFormat: "yy-mm-dd",
+                //maxDate: '+0D',
+                changeYear: true,
+                changeMonth: true
+
+            });
+        });
+
+    </script>
+}

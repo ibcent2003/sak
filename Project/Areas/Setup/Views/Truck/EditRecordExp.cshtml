@@ -1,0 +1,136 @@
+﻿@model Project.Areas.Setup.Models.TruckViewModel
+@using Project.HtmlHelpers
+@{
+    ViewBag.Title = "Edit Expenses";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.IsGreetings = "true";
+}
+@section Crumbs{
+    <div class="crumbs">
+
+        <ul class="breadcrumb" id="breadcrumbs">
+            <li> <i class="icon-home"></i> <a href="@Url.Action("Index", "Dashboard", new { area="Admin"})">Dashboard</a> </li>
+            <li class="current"> <a title="" href="javascript: return void(0)"></a>Edit Expense</li>
+        </ul>
+    </div>
+}
+
+<style>
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="widget box">
+            <div class="widget-header">
+                <h4>
+                    <i class="icon-reorder"></i>
+                    Edit Expense
+
+                </h4>
+            </div>
+            <div class="widget-content">
+                @using (Html.BeginForm("EditRecordExp", "Truck", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal row-border", Id= "myForm" }))
+                {
+
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.expenserecordForm.Id)
+                    <div class="form-group">
+                        @Html.Label("Name", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.expenserecordForm.Description, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.expenserecordForm.Description, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Debit", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.expenserecordForm.Debit, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.expenserecordForm.Debit, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Credit", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.expenserecordForm.Credit, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.expenserecordForm.Credit, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Balance", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.expenserecordForm.TotalBalance, new { @class = "form-control", @readonly=true })
+                            @Html.ValidationMessageFor(model => model.expenserecordForm.TotalBalance, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Date", new { @class = "col-md-2 control-label required" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.expenserecordForm.ExpensesDate, new { @class = "form-control datepicker-expirydate" })
+                            @Html.ValidationMessageFor(model => model.expenserecordForm.ExpensesDate, null, new { @style = "color:red" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <a href="@Url.Action("Index", "Truck", new { area="Setup"})" class="btn btn-success btn-xs"><< Back to List </a>
+                        <input type="submit" class="btn btn-warning btn-xs pull-right" value="Save" />
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/Content/Backend/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/tabletools/TableTools.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/colvis/ColVis.min.js")
+    @Scripts.Render("~/Content/Backend/plugins/datatables/DT_bootstrap.js")
+    <script>
+        "use strict";
+
+        function DeleteConfirm() {
+            if (confirm("Are you sure want to remove this expense?"))
+                return true;
+            else
+                return false;
+        }
+
+        $(document).ready(function () {
+            $(".datepicker-expirydate").datepicker({
+                defaultDate: +7,
+                showOtherMonths: true,
+                autoSize: true,
+                dateFormat: "yy-mm-dd",
+                //maxDate: '+0D',
+                changeYear: true,
+                changeMonth: true
+
+            });
+        });
+
+            //window.addEventListener("load", function () { // on page load
+            //    const nmb = document.getElementById("numexpenserecordForm_Credit"),
+            //        name = document.getElementById("expenserecordForm_Debit")
+            //    document.getElementById("myForm").addEventListener("input", function (e) {
+            //        const tgt = e.target;
+            //        const otherField = tgt.id === "nameexpenserecordForm_Debit" ? nmb : name;
+            //        otherField.disabled = tgt.value !== ""
+            //    });
+            //});
+        
+
+    </script>
+}
